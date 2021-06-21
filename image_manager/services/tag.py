@@ -7,23 +7,24 @@ class TagService:
         from image_manager.models.image import Tag, TagSchema
         tags = Tag.query.all()
         schema = TagSchema(many=True)
-        return schema.dump(tags), 200
+        return {
+            'results': schema.dump(tags),
+            'count': len(tags)
+               }, 200
 
     @staticmethod
-    def create(data):
+    def create(tag_name):
         from image_manager.models.image import Tag, TagSchema
         from app import db
 
-        tag_name = data.get('name')
         tag = Tag.query.filter(Tag.name == tag_name).one_or_none()
 
         if not tag:
             schema = TagSchema()
             new_tag = Tag(name=tag_name)
-            print(new_tag)
             db.session.add(new_tag)
             db.session.commit()
 
             return schema.dump(new_tag), 201
 
-        abort(400, message='Такой тег уже существует')
+        abort(400, message='Тег с таком названием уже существует')

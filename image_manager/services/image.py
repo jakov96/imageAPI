@@ -10,7 +10,10 @@ class ImageService:
         from image_manager.models.image import Image, ImageSchema
         images = Image.query.all()
         image_schema = ImageSchema(many=True)
-        return image_schema.dump(images), 200
+        return {
+            'results': image_schema.dump(images),
+            'count': len(images)
+               }, 200
 
     @staticmethod
     def read_one(image_id):
@@ -24,23 +27,24 @@ class ImageService:
         abort(404)
 
     @staticmethod
-    def create(data):
+    def create(image_data, tags_ids):
         from image_manager.models.image import Image, ImageSchema
         from app import app
 
-        if Image.allowed_file(data.filename):
-            image_name = '{}_{}'.format(str(uuid.uuid4()), secure_filename(data.filename))
+        if Image.allowed_file(image_data.filename):
+            image_name = '{}_{}'.format(str(uuid.uuid4()), secure_filename(image_data.filename))
 
             image_url = os.path.join(app.config['UPLOAD_FOLDER'], image_name)
             os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-            image = Image.create_image({
-                'name': image_name,
-                'url': image_url
+            image = Image.create({
+                'name': secure_filename(image_data.filename),
+                'url': image_url,
+                'tags': tags_ids
             })
 
             if image:
-                data.save(image_url)
+                image_data.save(image_url)
 
                 schema = ImageSchema()
                 return schema.dump(image), 201
