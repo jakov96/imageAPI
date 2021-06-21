@@ -1,6 +1,5 @@
 from app import db, ma
 from config import ALLOWED_EXTENSIONS
-from flask_restful import abort
 
 association_table = db.Table('association',
                              db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True),

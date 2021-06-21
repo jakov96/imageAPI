@@ -6,9 +6,14 @@ import uuid
 
 class ImageService:
     @staticmethod
-    def read_all():
-        from image_manager.models.image import Image, ImageSchema
-        images = Image.query.all()
+    def read_all(tags=None):
+        from image_manager.models.image import Image, ImageSchema, Tag
+
+        if tags:
+            images = Image.query.filter(Image.tags.any(Tag.id.in_(tags))).all()
+        else:
+            images = Image.query.all()
+
         image_schema = ImageSchema(many=True)
         return {
             'results': image_schema.dump(images),

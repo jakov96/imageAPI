@@ -1,10 +1,8 @@
-import json
-
 from flask import request
 from flask_restful import Resource, abort
 from image_manager.services.image import ImageService
 from image_manager.services.tag import TagService
-from werkzeug.datastructures import ImmutableMultiDict
+
 
 class ImageAPI(Resource):
     def get(self, image_id):
@@ -13,7 +11,9 @@ class ImageAPI(Resource):
 
 class ImagesAPI(Resource):
     def get(self):
-        return ImageService.read_all()
+        tags = request.args.getlist('tags')
+
+        return ImageService.read_all(tags)
 
     def post(self):
         if 'image' in request.files:
