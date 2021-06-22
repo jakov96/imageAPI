@@ -1,5 +1,11 @@
 # Документация imageAPI
 
+Для создания базы данных и таблиц, описанных в файле imageAPI/image_manager/models/image.py необходимо запустить скрипт:
+
+``` bash
+$ python3 build_database.py
+```
+
 ## Получение списка изображений
 
 URL: `/api/v1/images/`
