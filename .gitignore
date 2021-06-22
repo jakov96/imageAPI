@@ -1,4 +1,5 @@
 /.idea/*
-venv/*
+venv
+venv/lib/python3.6/site-packages
 uploads
 image.db
