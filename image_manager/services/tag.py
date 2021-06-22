@@ -4,6 +4,10 @@ from flask_restful import abort
 class TagService:
     @staticmethod
     def read_all():
+        """
+        Получение всех тегов
+        :return:
+        """
         from image_manager.models.image import Tag, TagSchema
         tags = Tag.query.all()
         schema = TagSchema(many=True)
@@ -14,6 +18,11 @@ class TagService:
 
     @staticmethod
     def create(tag_name):
+        """
+        Создание тега
+        :param tag_name:
+        :return:
+        """
         from image_manager.models.image import Tag, TagSchema
         from app import db
 

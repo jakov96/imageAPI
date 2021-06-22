@@ -7,6 +7,9 @@ import uuid
 class ImageService:
     @staticmethod
     def read_all(tags=None):
+        """
+       Получение списка изображений с фильтрацией по тегам
+       """
         from image_manager.models.image import Image, ImageSchema, Tag
 
         if tags:
@@ -22,6 +25,11 @@ class ImageService:
 
     @staticmethod
     def read_one(image_id):
+        """
+        Получение изображения по ID
+        :param image_id:
+        :return:
+        """
         from image_manager.models.image import Image, ImageSchema
         image = Image.query.filter(Image.id == image_id).one_or_none()
 
@@ -33,6 +41,12 @@ class ImageService:
 
     @staticmethod
     def create(image_data, tags_ids):
+        """
+        Создание изображения
+        :param image_data:
+        :param tags_ids:
+        :return:
+        """
         from image_manager.models.image import Image, ImageSchema
         from app import app
 
